@@ -1,5 +1,6 @@
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes   } = require('discord-api-types/v9');
+const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../config.json');
 
 const commands = [
@@ -7,6 +8,26 @@ const commands = [
     name: 'ping',
     description: 'Replies with Pong!',
   },
+  new SlashCommandBuilder()
+    .setName('createbutton')
+    .setDescription('Create button with options.')
+    .addStringOption(option =>
+      option.setName('id')
+        .setDescription('Custom ID of button')
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName('label')
+        .setDescription('Label for button')
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName('text')
+        .setDescription('Text in button message')
+        .setRequired(true))
+    ,
+    {
+      name: "register",
+      description: "re-register commands"
+    }
 ];
 
 module.exports = function regCommands() {
@@ -16,7 +37,7 @@ module.exports = function regCommands() {
       console.log('Started refreshing application (/) commands.');
 
       await rest.put(
-        Routes.applicationGuildCommands("1011253825883095231", "1011252639008292884"), // Temporary, change to final when release build is finished
+        Routes.applicationCommands("1011253825883095231"),
         { body: commands },
       );
 
